@@ -23,16 +23,12 @@ public class Printer extends MultiFunctionalUnit implements Runnable {
 
     synchronized (printLock) {
       try {
-
-        if (Thread.holdsLock(printLock)) {
           doStuffWithDocument(document);
           Thread.sleep(1000);
           printLock.notify();
           System.out.println();
+          printLock.wait(1000);
 
-        } else {
-          printLock.wait();
-        }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }

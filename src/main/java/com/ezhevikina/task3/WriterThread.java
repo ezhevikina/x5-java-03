@@ -19,30 +19,29 @@ class WriterThread implements Runnable {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    for (int i = 0; i < 3; i++) {
-      synchronized (bufferedWriter) {
 
-        try {
-          for (int j = 1; j <= 10; j++) {
-            bufferedWriter.write(name + " line " + j + "\n");
-          }
-        } catch (IOException e) {
-          e.printStackTrace();
+    synchronized (bufferedWriter) {
+
+      try {
+        for (int j = 1; j <= 10; j++) {
+          bufferedWriter.write(name + " line " + j + "\n");
         }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 
-        try {
-          Thread.sleep(20);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        }
+      try {
+        Thread.sleep(20);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
 
-        bufferedWriter.notifyAll();
+      bufferedWriter.notifyAll();
 
-        try {
-          bufferedWriter.wait(100);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        }
+      try {
+        bufferedWriter.wait(100);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
       }
     }
   }

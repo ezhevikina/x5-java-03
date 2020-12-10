@@ -22,16 +22,12 @@ public class Scanner extends MultiFunctionalUnit implements Runnable {
   public void run() {
     synchronized (scanLock) {
       try {
-
-        if (Thread.holdsLock(scanLock)) {
           doStuffWithDocument(document);
           Thread.sleep(1000);
           scanLock.notify();
           System.out.println();
+          scanLock.wait(1000);
 
-        } else {
-          scanLock.wait();
-        }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       }
